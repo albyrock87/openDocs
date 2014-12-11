@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?><plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    id="com.phonegap.plugins.opendocs"
+    version="2.0.1">
+
+    <name>opendocs</name>
+    <description></description>
+    <license>MIT</license>
+
+    <repo>https://github.com/tookiez/openDocs</repo>
+    <issue>https://github.com/tookiez/openDocs/issues</issue> 
+    
+    <engines>
+        <engine name="cordova" version=">=3.0.0" />
+    </engines>    
+
+    <js-module src="www/openDocs.js" name="openDocs">
+        <clobbers target="cordova.plugins.opendocs" />
+    </js-module>
+
+    <!-- ios -->
+    <platform name="ios">
+        <!-- Cordova >= 2.8 -->
+        <config-file target="config.xml" parent="/*">
+            <feature name="openDocs">
+                <param name="ios-package" value="openDocs" /> 
+            </feature>
+        </config-file>
+
+        <header-file src="src/ios/openDocs.h" />
+        <source-file src="src/ios/openDocs.m" compiler-flags="-fno-objc-arc" />
+    </platform>
+
+    <!-- android -->
+    <platform name="android">
+
+        <source-file src="src/android/BarcodeScanner.java" target-dir="src/android" />
+
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="openDocs">
+                <param name="android-package" value="opendocs" />
+            </feature>
+        </config-file>
+
+    </platform>
+</plugin>
