@@ -1,4 +1,4 @@
-package ##PACKAGE##;
+package com.phonegap.plugins.opendocs.OpenDocs;
 
 import java.io.File;
 
