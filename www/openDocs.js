@@ -26,7 +26,7 @@ cordova.addConstructor(function()  {
 		window.Cordova = cordova;
 	};
 					   
-	window.plugins.openDocs = new OpenDocs();
+	window.plugins.OpenDocs = new OpenDocs();
 });
 						 
 (function($){
@@ -61,7 +61,7 @@ cordova.addConstructor(function()  {
 			if (!done) return;
 			var filePathDownloaded = entry.toURL();
 			setTimeout(function () {
-				plugins.openDocs.open(onOpeningSuccess, onOpeningFail, filePathDownloaded);
+				plugins.OpenDocs.open(onOpeningSuccess, onOpeningFail, filePathDownloaded);
 			}, 100);
 		};
 		

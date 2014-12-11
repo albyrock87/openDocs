@@ -3,7 +3,7 @@
     id="com.phonegap.plugins.opendocs"
     version="2.0.1">
 
-    <name>opendocs</name>
+    <name>OpenDocs</name>
     <description></description>
     <license>MIT</license>
 
@@ -14,7 +14,7 @@
         <engine name="cordova" version=">=3.0.0" />
     </engines>    
 
-    <js-module src="www/openDocs.js" name="openDocs">
+    <js-module src="www/OpenDocs.js" name="OpenDocs">
         <clobbers target="cordova.plugins.opendocs" />
     </js-module>
 
@@ -22,25 +22,21 @@
     <platform name="ios">
         <!-- Cordova >= 2.8 -->
         <config-file target="config.xml" parent="/*">
-            <feature name="openDocs">
-                <param name="ios-package" value="openDocs" /> 
+            <feature name="OpenDocs">
+                <param name="ios-package" value="OpenDocs" /> 
             </feature>
         </config-file>
-
-        <header-file src="src/ios/openDocs.h" />
-        <source-file src="src/ios/openDocs.m" compiler-flags="-fno-objc-arc" />
+        <header-file src="src/ios/OpenDocs.h" />
+        <source-file src="src/ios/OpenDocs.m" />
     </platform>
 
     <!-- android -->
     <platform name="android">
-
-        <source-file src="src/android/BarcodeScanner.java" target-dir="src/android" />
-
+        <source-file src="src/android/OpenDocs.java" target-dir="src/android" />
         <config-file target="res/xml/config.xml" parent="/*">
-            <feature name="openDocs">
-                <param name="android-package" value="opendocs" />
+            <feature name="OpenDocs">
+                <param name="android-package" value="OpenDocs" />
             </feature>
         </config-file>
-
     </platform>
 </plugin>
