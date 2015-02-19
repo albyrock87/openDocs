@@ -36,6 +36,7 @@ cordova.addConstructor(function()  {
 		
 		var onFail = function () {
 			//TODO notification
+			alert('Errore. File non disponibile');
 			if (!done) return;
 			done = 0;
 			if (window.requestCount > 0) window.requestCount--;
