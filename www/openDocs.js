@@ -43,7 +43,11 @@ cordova.addConstructor(function()  {
 		};
    
 		var onDownloadFail = function (error) {
-			alert('Errore. File non disponibile');
+			if(navigator.notification && navigator.notification.alert){
+			    navigator.notification.alert('File non disponibile.', null, 'Errore');
+			} else {
+			    alert('Errore. File non disponibile.');
+			}
 			onFail();
 		};
    
