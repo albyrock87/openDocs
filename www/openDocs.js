@@ -98,6 +98,8 @@ cordova.addConstructor(function()  {
 		         localPath = localPath.substring(7);
 		      }
 		      var ft = new FileTransfer();
+		      // ft.download(remoteFile, localPath, onDownloadSuccess, onDownloadFail); //for platform-android v3.6.4
+		      // UPDATED for platform-android v5.0.0
 		      ft.download(remoteFile, cordova.file.externalDataDirectory + fileEntry.name, onDownloadSuccess, onDownloadFail);
 		   }, onFail);
 		}, onFail);
