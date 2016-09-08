@@ -92,14 +92,14 @@ cordova.addConstructor(function()  {
 		window.updateSpinner();
 		
 		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fileSystem) {
-			fileSystem.root.getFile(localFileName, { create: true, exclusive: false }, function (fileEntry) {
-				var localPath = fileEntry.toURL();
-				if (device.platform === "Android" && localPath.indexOf("file://") === 0) {
-					localPath = localPath.substring(7);
-				}
-				var ft = new FileTransfer();
-				ft.download(remoteFile, localPath, onDownloadSuccess, onDownloadFail);
-			}, onFail);
+		   fileSystem.root.getFile(localFileName, { create: true, exclusive: false }, function (fileEntry) {
+		      var localPath = fileEntry.toURL();
+		      if (device.platform === "Android" && localPath.indexOf("file://") === 0) {
+		         localPath = localPath.substring(7);
+		      }
+		      var ft = new FileTransfer();
+		      ft.download(remoteFile, cordova.file.externalDataDirectory + fileEntry.name, onDownloadSuccess, onDownloadFail);
+		   }, onFail);
 		}, onFail);
 	});
 })(jQuery);
