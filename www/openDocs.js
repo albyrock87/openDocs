@@ -1,4 +1,4 @@
-
+cordova.define("com.phonegap.plugins.opendocs.OpenDocs", function(require, exports, module) { 
 /**
 * OpenDocs plugin for PhoneGap
 * 
@@ -33,15 +33,7 @@ cordova.addConstructor(function()  {
 	$(document).on('click.downloadFile', 'a[download-file]', function(e){
 		
 		var done = 1;
-		
-		var onFail = function () {
-			//TODO notification
-			if (!done) return;
-			done = 0;
-			if (window.requestCount > 0) window.requestCount--;
-			window.updateSpinner();
-		};
-   
+
 		var onDownloadFail = function (error) {
 			if(navigator.notification && navigator.notification.alert){
 			    navigator.notification.alert('File non disponibile.', null, 'Errore');
@@ -69,7 +61,43 @@ cordova.addConstructor(function()  {
 				plugins.OpenDocs.open(onOpeningSuccess, onOpeningFail, filePathDownloaded);
 			}, 100);
 		};
-		
+
+		var onRequestFileSystemSuccess = function (fileSystem) {
+            var entry;
+
+		    if (device.platform.toLowerCase() == "android") {
+                entry = fileSystem;
+            } else {
+                entry = fileSystem.root;
+            }
+
+            entry.getFile(localFileName, { create: true, exclusive: false }, function (fileEntry) {
+                var localPath = fileEntry.toURL();
+                if (device.platform === "Android" && localPath.indexOf("file://") === 0) {
+                    localPath = localPath.substring(7);
+                }
+                var ft = new FileTransfer();
+                var trustAllHosts = false; // da usare UNICAMENTE nel caso di certificati self-signed
+                ft.download(remoteFile, localPath, onDownloadSuccess, onDownloadFail, trustAllHosts);
+            }, onFail);
+        };
+
+        var onFail = function () {
+            //TODO notification
+            if (!done) return;
+            done = 0;
+            if (window.requestCount > 0) window.requestCount--;
+            window.updateSpinner();
+        };
+
+        var onRequestFileSystemFail = function () {
+            //TODO notification
+            if (!done) return;
+            done = 0;
+            if (window.requestCount > 0) window.requestCount--;
+            window.updateSpinner();
+        };
+
 		setTimeout(function(){
 			onFail();
 		}, 30000);
@@ -90,18 +118,17 @@ cordova.addConstructor(function()  {
      
 		window.requestCount++;
 		window.updateSpinner();
-		
-		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fileSystem) {
-		   fileSystem.root.getFile(localFileName, { create: true, exclusive: false }, function (fileEntry) {
-		      var localPath = fileEntry.toURL();
-		      if (device.platform === "Android" && localPath.indexOf("file://") === 0) {
-		         localPath = localPath.substring(7);
-		      }
-		      var ft = new FileTransfer();
-		      // ft.download(remoteFile, localPath, onDownloadSuccess, onDownloadFail); //for platform-android v3.6.4
-		      // UPDATED for platform-android v5.0.0
-		      ft.download(remoteFile, cordova.file.externalDataDirectory + fileEntry.name, onDownloadSuccess, onDownloadFail);
-		   }, onFail);
-		}, onFail);
+
+        // cordova.file.externalApplicationStorageDirectory
+        // if the platform is android, then use another method for retrieve file system.
+		if (device.platform.toLowerCase() == "android") {
+            window.resolveLocalFileSystemURL(cordova.file.externalApplicationStorageDirectory, onRequestFileSystemSuccess, onRequestFileSystemFail);
+        } else {
+            window.requestFileSystem(LocalFileSystem.TEMPORARY, 0, onRequestFileSystemSuccess, onRequestFileSystemFail);
+        }
+
+
 	});
 })(jQuery);
+
+});
